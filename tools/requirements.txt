@@ -1,7 +1,0 @@
-tqdm
-numpy
-matplotlib
-pyquaternion
-shapely
-omegaconf
-tensorboard
