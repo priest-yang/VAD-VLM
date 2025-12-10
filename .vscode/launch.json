@@ -1,0 +1,125 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "VAD test",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "torch.distributed.launch", 
+            "args": [
+                "--nproc_per_node=1", 
+                "--master_port=29503", 
+                "./lwad/adbase/vad/test.py", 
+                "./lwad/adbase/vad/configs/VAD/VAD_lightwheel_config.py", 
+                "/data/nas/main/models/e2e_ad/vad/h800_vad_new.pth", 
+                "--launcher=pytorch", 
+                "--eval=bbox"
+            ]
+        },
+        {
+            "name": "VAD train",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "torch.distributed.launch",
+            "args": [
+                "--nproc_per_node=2",
+                "--master_port=28510",
+                "./lwad/adbase/vad/train.py",
+                "./lwad/adbase/vad/configs/VAD/VAD_lightwheel_config.py",
+                "--launcher=pytorch",
+                "--deterministic"
+            ],
+            "justMyCode": false
+        },
+        {
+            "name": "VADv2 train",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "torch.distributed.launch",
+            "args": [
+                "--nproc_per_node=1",
+                "--master_port=28510",
+                "./lwad/adbase/vad/train.py",
+                "./lwad/adbase/vad/configs/VAD/VAD_lightwheel_config_vadv2.py",
+                "--launcher=pytorch",
+                "--deterministic"
+            ],
+            "justMyCode": false
+        },
+        {
+            "name": "VADv2 train original",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "torch.distributed.launch",
+            "args": [
+                "--nproc_per_node=1",
+                "--master_port=28510",
+                "./lwad/adbase/vad/train.py",
+                "./lwad/adbase/vad/configs/VAD/VADv2_config_voca4096.py",
+                "--launcher=pytorch",
+                "--deterministic"
+            ],
+            "justMyCode": false, 
+            "env": {
+                "TORCH_DISTRIBUTED_DEBUG": "DETAIL", 
+                "find_unused_parameters": "True"
+            }
+        },
+        {
+            // Can not use this config to train currently
+            "name": "VAD DeepSpeed train",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "torch.distributed.launch",
+            "args": [
+                "--nproc_per_node=4",
+                "--master_port=28510",
+                "./lwad/adbase/vad/train_ds.py",
+                "./lwad/adbase/vad/configs/VAD/VAD_lightwheel_config.py",
+                "--launcher=pytorch",
+                "--deterministic"
+            ]
+        },
+        {
+            // Can not use this config to test currently
+            "name": "VAD optimized test",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "torch.distributed.launch",
+            "args": [
+                "--nproc_per_node=1",
+                "--master_port=29504",
+                "./lwad/adbase/vad/test_optimized.py",
+                "./lwad/adbase/vad/configs/VAD/VAD_lightwheel_config.py",
+                "/data/nas/main/models/e2e_ad/vad/h800_vad_new.pth",
+                "--launcher=pytorch",
+                "--eval=bbox"
+            ]
+        },
+        {
+            "name": "VLM pytorch eval",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "torch.distributed.run",
+            "console": "integratedTerminal",
+            "args": [
+                "--nnodes=1",
+                "--node_rank=0",
+                "--master_addr=127.0.0.1",
+                "--master_port=29506",
+                "./lwad/vlm/eval.py",
+                "--checkpoint", "data/ckpts",
+                "--data_file", "data/data.jsonl",
+                "--out-dir", "data/eval",
+                "--temperature", "0.3",
+                "--mode", "slow",
+                "--root", "/data/ceph_hdd/main/datasets/nuPlan/dataset/nuplan-v1.1/sensor_blobs",
+                "--bart_ckpt", "data/ckpts/bart-large-cnn",
+                "--bart_load", "data/bart_score.pth"
+            ]
+        }
+    ]
+}

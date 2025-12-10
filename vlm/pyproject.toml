@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lwad-vlm"
+version = "2.0.0"
+description = "Lightwheel InternVL-VLM"
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+]
+dependencies = [
+    "transformers", "tokenizers", "sentencepiece", "shortuuid",
+    "accelerate", "peft>=0.4.0", "bitsandbytes==0.41.0",
+    "pydantic", "markdown2[all]", "numpy", "scikit-learn>=1.2.2",
+    "requests", "httpx==0.24.0", "uvicorn", "fastapi", "einops-exts",
+    "Pillow", "tqdm", "opencv-python", "imageio", "decord", "apex",
+    "onnx", "onnx-tool", "tensorrt", "flash-attn",
+    "einops==0.8.0", "timm==1.0.9", "pycuda==2024.1.2"
+]
+
+[tool.setuptools.packages.find]
+exclude = ["data*", "benchmark*", "docs", "dist*", "playground*", "scripts*", "shell*"]
+
+[tool.wheel]
+exclude = ["data*", "benchmark*", "docs", "dist*", "playground*", "scripts*", "shell*"]
